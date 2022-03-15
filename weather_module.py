@@ -37,8 +37,8 @@ def print_weather_data(data: str):
     kelvin = 273.15  # Temperature shown here is in Kelvin and I will show in Celsius
     city_name = data['name']
     country = data['sys']['country']
-    temp = int(data['main']['temp'] - kelvin)
-    feels_like_temp = int(data['main']['feels_like'] - kelvin)
+    temp = int(float(data['main']['temp']) - kelvin)
+    feels_like_temp = int(float(data['main']['feels_like']) - kelvin)
     pressure = data['main']['pressure']
     humidity = data['main']['humidity']
     wind_speed = data['wind']['speed'] * 3.6
@@ -51,12 +51,24 @@ def print_weather_data(data: str):
     sunrise_time = time_from_utc_with_timezone(sunrise + timezone)
     sunset_time = time_from_utc_with_timezone(sunset + timezone)
 
-    print(f"Weather Information for City: {city_name} - {country}")
-    print(f"Temperature (Celsius): {temp}")
-    print(f"Feels like in (Celsius): {feels_like_temp}")
-    print(f"Pressure: {pressure} hPa")
-    print(f"Humidity: {humidity}%")
-    print("Wind speed: {0:.2f} km/hr".format(wind_speed))
-    print(f"Sunrise at {sunrise_time} and Sunset at {sunset_time}")
-    print(f"Cloud: {cloudy}%")
-    print(f"Info: {description}")
+    s = f"Weather Information for City: {city_name} - {country} \n"
+    s += f"Temperature (Celsius): {temp}\n"
+    s += f"Feels like in (Celsius): {feels_like_temp}\n"
+    s += f"Pressure: {pressure} hPa\n"
+    s += f"Humidity: {humidity}%\n"
+    s += "Wind speed: {0:.2f} km/hr".format(wind_speed) + "\n"
+    s += f"Sunrise at {sunrise_time} and Sunset at {sunset_time}\n"
+    s += f"Cloud: {cloudy}%\n"
+    s += f"Info: {description}\n"
+
+    return s
+
+    # print(f"Weather Information for City: {city_name} - {country}")
+    # print(f"Temperature (Celsius): {temp}")
+    # print(f"Feels like in (Celsius): {feels_like_temp}")
+    # print(f"Pressure: {pressure} hPa")
+    # print(f"Humidity: {humidity}%")
+    # print("Wind speed: {0:.2f} km/hr".format(wind_speed))
+    # print(f"Sunrise at {sunrise_time} and Sunset at {sunset_time}")
+    # print(f"Cloud: {cloudy}%")
+    # print(f"Info: {description}")

@@ -6,7 +6,7 @@ def main():
 
     try:
         data = w.get_weather_data(city)
-        w.print_weather_data(data)
+        print(w.print_weather_data(data))
     except Exception as e:
         print(e)
 
