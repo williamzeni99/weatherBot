@@ -1,4 +1,5 @@
 import requests
+import geoloc_module as g
 from datetime import datetime
 
 # Enter your API key openweathermap.org
@@ -13,13 +14,8 @@ def time_from_utc_with_timezone(utc_with_tz):
 
 
 def get_weather_data(city_name: str):
-    city_url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city_name + '&limit=1&appid=' + api_key
-    response = requests.get(city_url)
-    city_data = response.json()
 
-    if len(city_data) == 0:
-        raise Exception(f"Error 400 - City {city_name} not found")
-
+    city_data = g.get_coordinates(city_name)
     lat = str(city_data[0]['lat'])
     lon = str(city_data[0]['lon'])
 

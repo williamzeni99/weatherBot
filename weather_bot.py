@@ -1,5 +1,5 @@
 import telegram
-from telegram import Bot
+from telegram import Bot, KeyboardButton
 from telegram.ext import Updater, CommandHandler, CallbackContext
 
 import weather_module as w
@@ -16,7 +16,16 @@ def echo(update: Updater, context: CallbackContext, message: str):
     context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 
+# /start
+def startCommand(update: Updater, context: CallbackContext):
+    buttons = [[KeyboardButton("Posizione Attuale")], [KeyboardButton("Posizione manuale")]]
+    reply_markup = telegram.ReplyKeyboardMarkup(buttons)
+    # reply_markup = telegram.ReplyKeyboardMarkup([[telegram.KeyboardButton('Share Location Info', request_location=True)]])
+    context.bot.send_message(chat_id=update.effective_chat.id, text='Benvenuto! Seleziona una delle due opzioni', reply_markup=reply_markup)
+
+
 def getmeteo(update: Updater, context: CallbackContext):
+
     if len(update.message.text.split(' ')) < 2:
         mex = "Parameter is missing. Please insert a city name."
         echo(update, context, mex)
@@ -32,8 +41,9 @@ def getmeteo(update: Updater, context: CallbackContext):
 
 def main():
     meteo_handler = CommandHandler('getmeteo', getmeteo)
-
+    start_handler = CommandHandler('start', startCommand)
     dispatcher.add_handler(meteo_handler)
+    dispatcher.add_handler(start_handler)
 
     updater.start_polling()
     updater.idle()
