@@ -1,5 +1,4 @@
 import requests
-import geoloc_module as g
 from datetime import datetime
 
 # Enter your API key openweathermap.org
@@ -13,11 +12,14 @@ def time_from_utc_with_timezone(utc_with_tz):
     return local_time.time()
 
 
-def get_weather_data(city_name: str):
+# It provides weather data from coordinates
+def get_weather_data(city_data: []):
+    if len(city_data) != 2:
+        print("Invalid use of get_weather - missing parameters")
+        raise Exception("Error 402 - Internal error")
 
-    city_data = g.get_coordinates(city_name)
-    lat = str(city_data[0]['lat'])
-    lon = str(city_data[0]['lon'])
+    lat = str(city_data[0])
+    lon = str(city_data[1])
 
     weather_url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=' + api_key
     response = requests.get(weather_url)
@@ -59,12 +61,3 @@ def print_weather_data(data: str):
 
     return s
 
-    # print(f"Weather Information for City: {city_name} - {country}")
-    # print(f"Temperature (Celsius): {temp}")
-    # print(f"Feels like in (Celsius): {feels_like_temp}")
-    # print(f"Pressure: {pressure} hPa")
-    # print(f"Humidity: {humidity}%")
-    # print("Wind speed: {0:.2f} km/hr".format(wind_speed))
-    # print(f"Sunrise at {sunrise_time} and Sunset at {sunset_time}")
-    # print(f"Cloud: {cloudy}%")
-    # print(f"Info: {description}")
