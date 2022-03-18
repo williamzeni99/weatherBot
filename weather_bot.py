@@ -3,7 +3,7 @@ from telegram import Bot, KeyboardButton
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
 
 import weather_module as w
-import geoloc_module as g
+
 
 TOKEN = "5173123971:AAEPHhg-YIIlLPvOquLDEt7MM_-6k0Ndy5Q"
 
@@ -14,6 +14,7 @@ j = updater.job_queue
 
 instantlocText = "Posizione Attuale"
 coordinatesText = "Posizione manuale"
+notifyText = "Notifica Meteo"
 
 
 def echo(update: Updater, context: CallbackContext, message: str):
@@ -27,16 +28,6 @@ def startCommand(update: Updater, context: CallbackContext):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text='Benvenuto! Seleziona una delle due opzioni. Ti invieremo il meteo attuale',
                              reply_markup=reply_markup)
-
-
-def getmeteo(update: Updater, context: CallbackContext):
-    city = update.message.text
-    try:
-        coordinates = g.get_coordinates(city)
-        meteodata = w.get_weather_data(coordinates)
-        echo(update, context, w.print_weather_data(meteodata))
-    except Exception as e:
-        echo(update, context, str(e))
 
 
 def locationHandler(update: Updater, context: CallbackContext):
@@ -54,7 +45,13 @@ def manuallocationHandler(update: Updater, context: CallbackContext):
         text="Inserisci il nome di una città"
         echo(update, context, text)
     else:
-        getmeteo(update, context)
+        city = update.message.text
+        try:
+            coordinates = w.get_coordinates(city)
+            meteodata = w.get_weather_data(coordinates)
+            echo(update, context, w.print_weather_data(meteodata))
+        except Exception as e:
+            echo(update, context, str(e))
 
 
 def main():
