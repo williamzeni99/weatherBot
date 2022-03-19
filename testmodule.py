@@ -1,7 +1,6 @@
 import weather_module as w
 
 
-
 def main():
     city = input("City name: ")
 

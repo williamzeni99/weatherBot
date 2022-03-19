@@ -4,8 +4,8 @@ from datetime import datetime
 # Enter your API key openweathermap.org
 api_key = 'fe10eb2498e51eeb264ec71355e0f6fa'
 
-CRITICAL_TEMP = 3
-CRITICAL_WIND = 20
+CRITICAL_TEMP = 3  # celsius
+CRITICAL_WIND = 20  # km/h
 
 kelvin = 273.15  # Temperature shown here is in Kelvin and I will show in Celsius
 
@@ -81,3 +81,13 @@ def get_coordinates(city_name: str):
     city_data = [lat, lon]
 
     return city_data
+
+
+def is_critical(data: str):
+    temp = int(float(data['main']['temp']) - kelvin)
+    wind_speed = data['wind']['speed'] * 3.6
+
+    if temp <= CRITICAL_TEMP or wind_speed >= CRITICAL_WIND:
+        return True
+
+    return False
