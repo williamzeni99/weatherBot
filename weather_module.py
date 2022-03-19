@@ -4,7 +4,7 @@ from datetime import datetime
 # Enter your API key openweathermap.org
 api_key = 'fe10eb2498e51eeb264ec71355e0f6fa'
 
-CRITICAL_TEMP = 3  # celsius
+CRITICAL_TEMP = 30  # celsius
 CRITICAL_WIND = 20  # km/h
 
 kelvin = 273.15  # Temperature shown here is in Kelvin and I will show in Celsius
