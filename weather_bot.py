@@ -6,8 +6,8 @@ import weather_module as w
 
 TOKEN = "5173123971:AAEPHhg-YIIlLPvOquLDEt7MM_-6k0Ndy5Q"
 
-#How many times it checks the weather in seconds
-INTERVAL=15
+# How many times it checks the weather in seconds
+INTERVAL = 15
 
 
 def echo(update: Updater, context: CallbackContext, message: str):
@@ -19,6 +19,7 @@ def getcityname_id(args):
     cityid = ""
     for x in args:
         cityid += x.lower()
+        cityid += "_"
         cityname += x
         cityname += " "
 
@@ -39,7 +40,7 @@ def callback_timer(context: CallbackContext):
         echo(update, context, str(e))
 
 
-# job name prototype= chatId_City
+# job name prototype= chatId_City (1234_vedano_al_lambro)
 def getNotify(update: Update, context: CallbackContext):
     if len(context.args) > 0:
         citydata = getcityname_id(context.args)
@@ -54,7 +55,8 @@ def getNotify(update: Update, context: CallbackContext):
         chat_id = str(update.effective_chat.id) + "_" + citydata.get("cityid")
 
         if not j.get_jobs_by_name(chat_id):
-            j.run_repeating(callback_timer, interval=INTERVAL, context={"update": update, "city": citydata.get("cityname")},
+            j.run_repeating(callback_timer, interval=INTERVAL,
+                            context={"update": update, "city": citydata.get("cityname")},
                             name=chat_id)
             echo(update, context, "Notifica impostata")
         else:
@@ -115,7 +117,29 @@ def startCommand(update: Updater, context: CallbackContext):
 
 
 def listCommand(update: Update, context: CallbackContext):
-    print("todo")
+    j = context.job_queue
+    text = "Notiche attive\n\n"
+    chat_id = str(update.effective_chat.id)
+    jobs = list(j.jobs())
+    for x in jobs:
+        name = x.name
+        name = name.split("_")[0]
+        if name != chat_id:
+            jobs.remove(x)
+
+    if len(jobs) == 0:
+        echo(update, context, "Nessuna notifica attiva trovata")
+        return
+
+    for x in jobs:
+        name = x.name.split("_")
+        name.remove(name[0])
+        name = " ".join(name)
+        text += " - " + name + "\n"
+
+    text += "\n"
+
+    echo(update, context, text)
 
 
 def locationHandler(update: Updater, context: CallbackContext):
