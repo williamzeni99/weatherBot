@@ -8,6 +8,7 @@ def main():
     try:
         coordinates = w.get_coordinates(city)
         data = w.get_weather_data(coordinates)
+        print(data)
         print(w.print_weather_data(data))
     except Exception as e:
         print(e)

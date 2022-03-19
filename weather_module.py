@@ -4,6 +4,11 @@ from datetime import datetime
 # Enter your API key openweathermap.org
 api_key = 'fe10eb2498e51eeb264ec71355e0f6fa'
 
+CRITICAL_TEMP = 3
+CRITICAL_WIND = 20
+
+kelvin = 273.15  # Temperature shown here is in Kelvin and I will show in Celsius
+
 
 # Get the time from utc and timezone values provided
 # pass the value as utc + timezone (both are UTC timestamp)
@@ -32,7 +37,6 @@ def get_weather_data(city_data: []):
 
 
 def print_weather_data(data: str):
-    kelvin = 273.15  # Temperature shown here is in Kelvin and I will show in Celsius
     city_name = data['name']
     country = data['sys']['country']
     temp = int(float(data['main']['temp']) - kelvin)
@@ -63,7 +67,6 @@ def print_weather_data(data: str):
 
 
 def get_coordinates(city_name: str):
-    
     city_url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city_name + '&limit=1&appid=' + api_key
 
     response = requests.get(city_url)
